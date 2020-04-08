@@ -5,20 +5,14 @@ import { IPlotData, IPlotlyChart } from '@/@types/plotly'
 
 export default defineComponent({
   props: {
-    seriesData: { type: Object as PropType<Pick<IPlotData, 'x' | 'y'>>, required: true },
+    series: { type: Object as PropType<IPlotData>, required: true },
   },
   /**
    * Do not destructure context or you'll lose reactivity. This is a bug in the composition API plugin.
    * See https://github.com/vuejs/composition-api/issues/264
    */
   setup(props, context) {
-    const series = computed(() => ({
-      x: props.seriesData.x,
-      y: props.seriesData.y,
-      ...context.attrs,
-      type: 'scatter',
-      mode: context.attrs.mode ?? 'lines',
-    })) as Ref<IPlotData>
+    const series = computed(() => props.series) as Ref<IPlotData>
 
     useSetupPlotlySeries(series, context.parent as Vue & IPlotlyChart)
   },

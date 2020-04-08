@@ -12,8 +12,6 @@ export default defineComponent({
    * See https://github.com/vuejs/composition-api/issues/264
    */
   setup(props, context) {
-    const plotData = (context.parent as Vue & IPlotlyChart).plotData
-
     const series = computed(() => ({
       values: props.seriesData.values,
       labels: props.seriesData.labels,
@@ -21,7 +19,7 @@ export default defineComponent({
       type: 'pie',
     })) as Ref<IPlotData>
 
-    useSetupPlotlySeries(series, plotData)
+    useSetupPlotlySeries(series, context.parent as Vue & IPlotlyChart)
   },
   render(h) {
     return h()

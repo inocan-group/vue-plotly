@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, computed, Ref } from '@vue/composition-api'
+import { defineComponent, PropType, computed, Ref, watch } from '@vue/composition-api'
 import { useSetupPlotlySeries } from '@/composables/plotly'
 import { IPlotData, IPlotlyChart } from '@/@types/plotly'
 
@@ -12,8 +12,6 @@ export default defineComponent({
    * See https://github.com/vuejs/composition-api/issues/264
    */
   setup(props, context) {
-    const plotData = (context.parent as Vue & IPlotlyChart).plotData
-
     const series = computed(() => ({
       x: props.seriesData.x,
       y: props.seriesData.y,
@@ -21,7 +19,7 @@ export default defineComponent({
       type: 'bar',
     })) as Ref<IPlotData>
 
-    useSetupPlotlySeries(series, plotData)
+    useSetupPlotlySeries(series, context.parent as Vue & IPlotlyChart)
   },
   render(h) {
     return h()
